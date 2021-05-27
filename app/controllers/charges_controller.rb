@@ -24,7 +24,11 @@ class ChargesController < ApplicationController
     end
 
     def success
-        
+        @product = Product.find(params[:id])
+        @product.sales_count += 1
+        @product.save
+
+        redirect_to root_path
     end
 
     def cancel
