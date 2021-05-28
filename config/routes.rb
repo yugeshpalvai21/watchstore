@@ -8,4 +8,7 @@ Rails.application.routes.draw do
       get 'cancel'
     end
   end
+
+  resources :line_items
+  resources :carts
 end

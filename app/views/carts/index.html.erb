@@ -1,0 +1,11 @@
+<hr>
+<h1>CART SUMMARY</h1>
+<hr>
+
+<ul>
+    <% @cart.line_items.each do |line_item| %>
+        <li><%= "#{line_item.product.title} - #{number_to_currency line_item.product.price}" %></li>
+    <% end %>
+</ul>
+
+<h3>Grand Total - <%= @cart.grand_total %></h3>
