@@ -1,2 +1,11 @@
-<h1 align="center">WELCOME TO WATCH STORE</h1><hr />
-<%= link_to "Products", products_path %>
+<div class="h-100 p-5 text-white bg-dark rounded-3 mt-1" style="height:35vh !important;">
+    <h2 class="text-center" style="padding-top: 30px;">Welcome To Watch Store</h2>
+</div>
+
+<h2 class="text-center">Recently Added</h2><hr />
+<div class="container">
+    <div class="row">
+        <%= render @products %>
+    </div
+</div>
+
