@@ -1,4 +1,7 @@
 class ChargesController < ApplicationController
+    before_action :authenticate_user!, only: [:create]
+    before_action :check_cart, only: [:create]
+
     def create
         @cart = current_user.cart
 
@@ -37,6 +40,12 @@ class ChargesController < ApplicationController
           },
           quantity: 1
         }
+      end
+    end
+
+    def check_cart
+      if current_user.cart.line_items.empty?
+        redirect_to request.referrer, notice: 'please add products to cart before checkout'
       end
     end
 end
