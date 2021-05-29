@@ -1,17 +1,26 @@
-<hr>
-<h1>CART SUMMARY</h1>
-<hr>
-<% if @cart.line_items.empty? %>
-    <h4>It Seems You haven't added any watches to cart..</h4>
-    <%= link_to "Explore Watches", products_path %>
-<% else %>
-    <ul>
-        <% @cart.line_items.each do |line_item| %>
-            <li><%= "#{line_item.product.title} - #{number_to_currency line_item.product.price}" %></li>
-        <% end %>
-    </ul>
-
-    <h3>Grand Total - <%= number_to_currency @cart.total_amount %></h3>
-
-    <%= button_to "Proceed To Checkout", charges_path, remote: true %>
-<% end %> 
+<div class="container" style="margin-top: 30px;">
+    <% if @cart.line_items.present? %>
+        <div class="card">
+            <div class="card-header text-center">
+                CART SUMMARY
+            </div>
+            <ul class="list-group list-group-flush">
+                <% @cart.line_items.each do |line_item| %>
+                    <li class="list-group-item">
+                        <%= image_tag line_item.product.image, alt: 'p_img', size: '100x100', class: 'rounded' %>&nbsp;&nbsp;
+                        <strong><%= line_item.product.title %></strong>&nbsp;&nbsp;
+                        <%= "Quntity - #{line_item.quantity}" %>&nbsp;&nbsp;
+                        <%= "Price - #{number_to_currency line_item.product.price}" %>
+                    </li>
+                <% end %>
+            </ul>
+            <div class="card-footer">
+                <p class="text-end">Grand Total - <strong><%= number_to_currency @cart.total_amount %></strong></p>
+                <p class="text-end"><%= link_to "Proceed To CheckOut", charges_path, method: :post, class:'btn btn-success btn-lg' %></p>
+            </div>
+        </div>
+    <% else %>
+        <h4>It Seems You haven't added any products to cart</h4>
+        <p><%= link_to "Explore Products", products_path %></p>
+    <% end %>
+</div>
