@@ -1,0 +1,8 @@
+<h1 class="text-center">Your Orders</h1>
+<hr>
+<% @orders.each do |order| %>
+    <h3>Product Count - <%= order.line_items.count %></h3>
+    <h3>Paid - <%= order.stripe_payment_status %></h3>
+    <h3>Order Ref - <%= order.stripe_payment_intent %></h3>
+    <hr>
+<% end %>
