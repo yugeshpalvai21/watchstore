@@ -14,7 +14,11 @@
         </li>
         <% if user_signed_in? %>
           <li class="nav-item">
-            <%= link_to "My Cart", carts_path,  class: 'nav-link' %>
+            <%= link_to carts_path,  class: 'nav-link' do %>
+              <i class="fas fa-cart-plus"></i>
+              Cart
+              (<%= current_user.cart.line_items.count %>)
+            <% end %>
           </li>
           <li class="nav-item">
             <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: 'nav-link' %>
