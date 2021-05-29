@@ -8,4 +8,6 @@
     <% end %>
 </ul>
 
-<h3>Grand Total - <%= @cart.grand_total %></h3>
+<h3>Grand Total - <%= number_to_currency @cart.grand_total %></h3>
+
+<%= button_to "Proceed To Checkout", charges_path, remote: true %> 

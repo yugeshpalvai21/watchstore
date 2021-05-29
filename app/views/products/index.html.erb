@@ -19,7 +19,7 @@
         <td><%= product.title %></td>
         <td><%= number_to_currency product.price %></td>
         <td><%= product.sales_count %></td>
-        <td><%= button_to "Add To Cart", line_items_path, params: {product_id: product.id}, remote: true %></td>
+        <td><%= button_to "Add To Cart", line_items_path, params: {product_id: product.id} %></td>
         <td><%= link_to 'Show', product %></td>
         <td><%= link_to 'Edit', edit_product_path(product) %></td>
         <td><%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are you sure?' } %></td>

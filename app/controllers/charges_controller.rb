@@ -1,22 +1,15 @@
 class ChargesController < ApplicationController
     def create
-        @product = Product.find(params[:product_id])
+        @cart = current_user.cart
+
         @session = Stripe::Checkout::Session.create({
             payment_method_types: ['card'],
-            line_items: [{
-              price_data: {
-                currency: 'inr',
-                product_data: {
-                  name: @product.title,
-                },
-                unit_amount: @product.price * 100,
-              },
-              quantity: 1,
-            }],
+            customer_email: current_user.email,
+            line_items: line_items_data,
             mode: 'payment',
             # These placeholder URLs will be replaced in a following step.
-            success_url: success_charge_url(@product.id),
-            cancel_url: cancel_charge_url(@product.id)
+            success_url: success_charge_url(@cart.id),
+            cancel_url: cancel_charge_url(@cart.id)
         })
         respond_to do |format|
            format.js 
@@ -24,13 +17,26 @@ class ChargesController < ApplicationController
     end
 
     def success
-        @product = Product.find(params[:id])
-        @product.sales_count += 1
-        @product.save
+        @cart = Cart.find(params[:id])  
 
         redirect_to root_path
     end
 
     def cancel
+    end
+
+    def line_items_data
+      @cart.line_items.map do |line_item| 
+        {
+          price_data: {
+            currency: 'inr',
+            product_data: {
+              name: line_item.product.title
+            },
+            unit_amount: line_item.product.price * 100
+          },
+          quantity: 1
+        }
+      end
     end
 end
