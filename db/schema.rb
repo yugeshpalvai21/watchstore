@@ -10,13 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_29_113316) do
+ActiveRecord::Schema.define(version: 2021_05_29_144131) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "carts", force: :cascade do |t|
-    t.integer "grand_total", default: 0, null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -42,6 +41,7 @@ ActiveRecord::Schema.define(version: 2021_05_29_113316) do
     t.boolean "stripe_payment_status"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "stripe_paid_amount", default: 0, null: false
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 

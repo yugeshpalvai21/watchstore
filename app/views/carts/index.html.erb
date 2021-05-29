@@ -1,13 +1,17 @@
 <hr>
 <h1>CART SUMMARY</h1>
 <hr>
+<% if @cart.line_items.empty? %>
+    <h4>It Seems You haven't added any watches to cart..</h4>
+    <%= link_to "Explore Watches", products_path %>
+<% else %>
+    <ul>
+        <% @cart.line_items.each do |line_item| %>
+            <li><%= "#{line_item.product.title} - #{number_to_currency line_item.product.price}" %></li>
+        <% end %>
+    </ul>
 
-<ul>
-    <% @cart.line_items.each do |line_item| %>
-        <li><%= "#{line_item.product.title} - #{number_to_currency line_item.product.price}" %></li>
-    <% end %>
-</ul>
+    <h3>Grand Total - <%= number_to_currency @cart.total_amount %></h3>
 
-<h3>Grand Total - <%= number_to_currency @cart.grand_total %></h3>
-
-<%= button_to "Proceed To Checkout", charges_path, remote: true %> 
+    <%= button_to "Proceed To Checkout", charges_path, remote: true %>
+<% end %> 

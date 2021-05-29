@@ -10,15 +10,12 @@ class ChargesController < ApplicationController
             customer_email: current_user.email,
             line_items: line_items_data,
             mode: 'payment',
-            # These placeholder URLs will be replaced in a following step.
             success_url: success_charges_url + "?session_id={CHECKOUT_SESSION_ID}",
             cancel_url: cancel_charges_url + "?session_id={CHECKOUT_SESSION_ID}"
         })
 
-        @order = current_user.orders.build
-        @order.stripe_session_id = @session.id
-        @order.save
-
+        @order = current_user.orders.create(stripe_session_id: @session.id)
+        
         current_user.cart.line_items.each do |line_item|
           line_item.update(order: @order)
         end
@@ -34,13 +31,8 @@ class ChargesController < ApplicationController
         if @session && @session.payment_status == "paid"
           @order = Order.where(stripe_session_id: @session.id).first
           if @order && !@order.stripe_payment_status
-            @order.stripe_payment_status = true
-            @order.stripe_payment_intent = @session.payment_intent
-            @order.save
-            @order.line_items.each do |line_item|
-              line_item.update(cart_id: nil)
-            end
-            current_user.cart.update(grand_total: 0)
+            @order.update(stripe_payment_status: true, stripe_payment_intent: @session.payment_intent, stripe_paid_amount: @session.amount_total/100)
+            @order.line_items.each { |line_item| line_item.update(cart_id: nil) }
             flash[:notice] = "Order Placed Succeesully..."
           end
         end
@@ -52,6 +44,8 @@ class ChargesController < ApplicationController
 
     def cancel
     end
+
+    private
 
     def line_items_data
       @cart.line_items.map do |line_item| 

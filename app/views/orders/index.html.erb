@@ -4,5 +4,7 @@
     <h3>Product Count - <%= order.line_items.count %></h3>
     <h3>Paid - <%= order.stripe_payment_status %></h3>
     <h3>Order Ref - <%= order.stripe_payment_intent %></h3>
+    <p>Total Amount  - <%= order.total_amount %></p>
+    <p>Paid Amount  - <%= order.stripe_paid_amount %></p>
     <hr>
 <% end %>
