@@ -6,6 +6,8 @@ class User < ApplicationRecord
   
   after_create do
     Cart.create(user: self)
+    stripe_customer = Stripe::Customer.create(email: self.email)
+    update(stripe_customer_id: stripe_customer.id)
   end
 
   has_one :cart

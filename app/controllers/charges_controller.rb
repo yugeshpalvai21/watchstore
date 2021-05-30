@@ -7,7 +7,7 @@ class ChargesController < ApplicationController
 
         @session = Stripe::Checkout::Session.create({
             payment_method_types: ['card'],
-            customer_email: current_user.email,
+            customer: current_user.stripe_customer_id,
             line_items: line_items_data,
             mode: 'payment',
             success_url: success_charges_url + "?session_id={CHECKOUT_SESSION_ID}",
