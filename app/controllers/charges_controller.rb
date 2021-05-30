@@ -22,20 +22,15 @@ class ChargesController < ApplicationController
       if params[:session_id]
         @session = Stripe::Checkout::Session.retrieve({ id: params[:session_id] }) 
         if @session && @session.payment_status == "paid"
-          @order = Order.where(stripe_session_id: @session.id).first
-          if @order && !@order.stripe_payment_status
-            @order.update(stripe_payment_status: true, stripe_payment_intent: @session.payment_intent, stripe_paid_amount: @session.amount_total/100)
-            @order.line_items.each { |line_item| line_item.update(cart_id: nil) }
-            flash[:notice] = "Order Placed Succeesully..."
-          end
+          set_order
+          update_order
         end
-        redirect_to root_path
-      else
-        redirect_to root_path, notice: 'nothing to display'
       end
+      redirect_to root_path
     end
 
     def cancel
+      redirect_to root_path, notice: 'Payment Cancelled'
     end
 
     private
@@ -70,5 +65,21 @@ class ChargesController < ApplicationController
       current_user.cart.line_items.each do |line_item|
         line_item.update(order: @order)
       end
+    end
+
+    def set_order
+      @order = Order.where(stripe_session_id: @session.id).first
+    end
+
+    def update_order
+      if @order && !@order.stripe_payment_status
+        @order.update(stripe_payment_status: true, stripe_payment_intent: @session.payment_intent, stripe_paid_amount: @session.amount_total/100)
+        empty_user_cart
+        flash[:notice] = "Order Placed Succeesully..."
+      end
+    end
+
+    def empty_user_cart
+      @order.line_items.each { |line_item| line_item.update(cart_id: nil) }
     end
 end
