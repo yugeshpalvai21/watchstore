@@ -16,7 +16,7 @@
             </ul>
             <div class="card-footer">
                 <p class="text-end">Grand Total - <strong><%= number_to_currency @cart.total_amount %></strong></p>
-                <p class="text-end"><%= link_to "Proceed To CheckOut", charges_path, method: :post, class:'btn btn-success btn-lg' %></p>
+                <p class="text-end"><%= link_to "Proceed To CheckOut", charges_path, method: :post, remote: true, class:'btn btn-success btn-lg' %></p>
             </div>
         </div>
     <% else %>

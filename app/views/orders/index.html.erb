@@ -1,10 +1,28 @@
 <h1 class="text-center">Your Orders</h1>
 <hr>
-<% @orders.each do |order| %>
-    <h3>Product Count - <%= order.line_items.count %></h3>
-    <h3>Paid - <%= order.stripe_payment_status %></h3>
-    <h3>Order Ref - <%= order.stripe_payment_intent %></h3>
-    <p>Total Amount  - <%= order.total_amount %></p>
-    <p>Paid Amount  - <%= order.stripe_paid_amount %></p>
-    <hr>
-<% end %>
+
+<div class="container">
+    <% @orders.each do |order| %>
+        <div class="card mb-5">
+            <div class="card-header">
+                Order Reference - <%= order.stripe_payment_intent %>
+            </div>
+            <ul class="list-group list-group-flush">
+                <% order.line_items.each do |line_item| %>
+                    <li class="list-group-item">
+                        <%= image_tag line_item.product.image, alt: 'p_img', size: '100x100', class: 'rounded' %>&nbsp;&nbsp;
+                        <strong><%= line_item.product.title %></strong>&nbsp;&nbsp;
+                        <%= "Quntity - #{line_item.quantity}" %>&nbsp;&nbsp;
+                        <%= "Price - #{number_to_currency line_item.product.price}" %>
+                    </li>
+                <% end %>
+            </ul>
+            <div class="card-footer">
+                <p class="text-end">Grand Total - <strong><%= number_to_currency order.total_amount %></strong></p>
+            </div>
+            <div class="card-footer">
+                <p class="text-end">Amount Paid - <strong><%= number_to_currency order.stripe_paid_amount %></strong></p>
+            </div>
+        </div>
+    <% end %>
+</div>
