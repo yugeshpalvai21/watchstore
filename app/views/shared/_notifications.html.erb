@@ -1,5 +1,3 @@
-<% if notice %>
-    <p class="alert alert-success" role="alert"><%= notice %></p>
-<% elsif alert %>
-    <p class="alert alert-info" role="alert"><%= alert %></p>
+<% unless flash.empty? %>
+    <%= toastr_flash %>
 <% end %>
