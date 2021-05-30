@@ -1,7 +1,7 @@
 class LineItemsController < ApplicationController
     before_action :authenticate_user!
     before_action :set_cart
-    before_action :set_product
+    before_action :set_product, only: [:create]
 
     def create
         if item_already_added?
@@ -10,6 +10,11 @@ class LineItemsController < ApplicationController
             LineItem.create(product: @product, cart: @cart) 
             redirect_to request.referrer, notice: 'Product Added To Cart...'
         end
+    end
+
+    def destroy
+        @cart.line_items.where(id: params[:id]).first.destroy
+        redirect_to carts_path, notice: 'Removed Item From Cart...'
     end
 
     private

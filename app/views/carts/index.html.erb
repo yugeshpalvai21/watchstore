@@ -10,7 +10,8 @@
                         <%= image_tag line_item.product.image, alt: 'p_img', size: '100x100', class: 'rounded' %>&nbsp;&nbsp;
                         <strong><%= line_item.product.title %></strong>&nbsp;&nbsp;
                         <%= "Quntity - #{line_item.quantity}" %>&nbsp;&nbsp;
-                        <%= "Price - #{number_to_currency line_item.product.price}" %>
+                        <%= "Price - #{number_to_currency line_item.product.price}" %> &nbsp;&nbsp;&nbsp;&nbsp;
+                        <%= link_to "Remove From Cart", line_item_path(line_item), method: :delete, class: 'btn btn-danger' %>
                     </li>
                 <% end %>
             </ul>
