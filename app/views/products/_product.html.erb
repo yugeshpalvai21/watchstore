@@ -1,6 +1,6 @@
 <div class="col-md-4 mb-5">
     <div class="card">
-        <%= image_tag product.image, class: 'card-img-top', height: '250px', alt: 'product_image' %>
+        <%= image_tag product.image, class: 'card-img-top', height: '250px', alt: 'product_image', onerror: "this.src='https://www.kindpng.com/picc/m/25-255340_ruby-on-rails-png-png-download-best-ruby.png'" %>
         <div class="card-body">
             <h5 class="card-title"><%= product.title %></h5>
             <p class="card-text"><%= number_to_currency product.price %></p>
